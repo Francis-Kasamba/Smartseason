@@ -18,8 +18,8 @@ cd ../frontend && npm install
 npm run dev
 ````
 
-Frontend: [http://localhost:5174](http://localhost:5174)
-Backend: [http://localhost:3001](http://localhost:3001)
+Frontend: [https://smartseason-2-0ri5.onrender.com](https://smartseason-2-0ri5.onrender.com/login)
+Backend: [https://smartseason-1-h8ek.onrender.com](https://smartseason-1-h8ek.onrender.com)
 
 ---
 
