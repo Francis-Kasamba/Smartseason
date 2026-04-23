@@ -1,6 +1,6 @@
-# SmartSeason
+# 🌱 SmartSeason Field Monitoring System
 
-SmartSeason is a full-stack field management platform designed for agricultural operations. It enables admins and agents to manage fields, track lifecycle progress, and log observations efficiently.
+SmartSeason is a full-stack web application for tracking crop progress across multiple fields during a growing season. It enables administrators and field agents to collaborate efficiently through structured field management, updates, and dashboards.
 
 
 ##  Quick Start
@@ -9,152 +9,219 @@ SmartSeason is a full-stack field management platform designed for agricultural 
 git clone <repository-url>
 cd smartseason
 
-# install root dependencies
+# install dependencies
 npm install
-
-# install backend and frontend
 cd backend && npm install
 cd ../frontend && npm install
 
-# run both apps (from root)
+# run both services
 npm run dev
 ````
 
-Open the application at:
-[http://localhost:5174](http://localhost:5174)
+Frontend: [http://localhost:5174](http://localhost:5174)
+Backend: [http://localhost:3001](http://localhost:3001)
 
 ---
 
-## 1. Tech Stack
+## 🔐 Demo Credentials
+
+**Admin**
+
+* Email: [admin@smartseason.com](mailto:admin@smartseason.com)
+* Password: <admin-password>
+
+**Agent**
+
+* Email: [agent@smartseason.com](mailto:agent@smartseason.com)
+* Password: <agent-password>
+
+---
+
+## 🧱 Tech Stack
 
 ### Frontend
 
-* React (latest stable)
-* TypeScript
+* React (TypeScript)
 * Vite
 * Tailwind CSS
 * React Router
 * TanStack React Query
-* Radix UI
 
 ### Backend
 
 * Node.js
-* Express 5
+* Express
 * Supabase (Auth + PostgreSQL)
 * Nodemailer (SMTP)
 
 ---
 
-## 2. Project Structure
+## 🏗 System Design
 
-```text
-smartseason/
-  backend/            # Express API + Supabase integration
-  frontend/           # React application
-  package.json        # Root scripts
-```
-
----
-
-## 3. Architecture
-
-SmartSeason follows a modular layered architecture focused on clarity and maintainability.
+SmartSeason follows a modular layered architecture:
 
 ### Backend
 
-* controllers → handle HTTP logic
+* controllers → request/response handling
 * services → business logic
 * routes → API definitions
-* middleware → auth and validation
+* middleware → authentication & authorization
 * lib → integrations (Supabase, SMTP)
 
 ### Frontend
 
 * pages → route-level views
 * components → reusable UI
-* contexts → global state (auth, toast)
-* hooks → logic and data fetching
-* lib → API utilities
+* contexts → global state
+* hooks → data fetching logic
+
+This structure ensures clear separation of concerns and maintainability.
 
 ---
 
-## 4. Core Features
+## 👥 Users & Access
 
-### Authentication and Access Control
+The system supports two roles:
 
-* Supabase email/password login
-* Backend token verification
-* Role-based access (admin, agent)
-* Protected routes
+### Admin (Coordinator)
 
-### Agent Management
+* Full access to all fields
+* Manage agents
+* View all updates and dashboards
 
-* Full CRUD (admin only)
-* SMTP invite emails
-* Temporary passwords
-* Forced password reset on first login
+### Field Agent
 
-### Field Management
+* Access only assigned fields
+* Update field stages
+* Add observations
 
-* Admin CRUD operations
-* Field assignment to agents
-* Lifecycle tracking:
-
-  * planted → growing → ready → harvested
-
-### Observations
-
-* Agents can log updates and notes
-* Edits allowed only within 15 minutes
-* Rule enforced on backend
-
-### Dashboards
-
-* Admin: system-wide stats and activity
-* Agent: assigned fields and progress
-
-### UI/UX
-
-* Responsive layout
-* Collapsible sidebar
-* Mobile drawer navigation
-* Toast notifications
-* Error boundary and 404 page
+Authentication is handled via Supabase, with backend token verification and role-based route protection.
 
 ---
 
-## 5. Routing Behavior
+## 🌾 Field Management
 
-* `/` → redirects to `/login`
-* `/login` → public page
-* `/admin/*` → admin routes
-* `/agent/*` → authenticated routes
-* unknown routes → 404 page
+Admins can:
+
+* Create fields
+* Update fields
+* Delete fields
+* Assign fields to agents
+
+Each field contains:
+
+* Name
+* Crop type
+* Planting date
+* Current stage
+* Assigned agent
 
 ---
 
-## 6. Environment Configuration
+## 🔄 Field Updates
 
-### Backend (backend/.env)
+### Field Agents
+
+* Update field stage
+* Add notes/observations
+
+### Admins
+
+* View all updates across all fields
+* Monitor agent activity
+
+---
+
+## 🌱 Field Stages
+
+Fields follow this lifecycle:
+
+* Planted
+* Growing
+* Ready
+* Harvested
+
+Stage updates are validated and tracked in the system.
+
+---
+
+## ⚠️ Field Status Logic
+
+Each field has a computed status:
+
+### Status Types
+
+* **Active**
+* **At Risk**
+* **Completed**
+
+### Logic
+
+* **Completed**
+
+  * Field stage = `harvested`
+
+* **Active**
+
+  * Field is in `planted`, `growing`, or `ready`
+  * AND has been updated recently
+
+* **At Risk**
+
+  * Field is not harvested
+  * AND has not been updated for a defined period (e.g., several days)
+
+This logic helps identify neglected or delayed fields.
+
+---
+
+## 📊 Dashboard
+
+### Admin Dashboard
+
+* Total number of fields
+* Status breakdown (Active / At Risk / Completed)
+* Recent activity across agents
+
+### Agent Dashboard
+
+* Assigned fields
+* Field progress
+* Personal activity overview
+
+---
+
+## ⏱ Observation Edit Rule
+
+Observations can only be edited if:
+
+* The user is the creator OR an admin
+* The observation is less than 15 minutes old
+
+This rule is enforced on the backend.
+
+---
+
+## ⚙️ Environment Setup
+
+### Backend (`backend/.env`)
 
 ```env
-SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_URL=your-url
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 SUPABASE_ANON_KEY=your-anon-key
 
-FRONTEND_URL=http://localhost:5174
 PORT=3001
+FRONTEND_URL=http://localhost:5174
 
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your-gmail@gmail.com
+SMTP_USER=your-email
 SMTP_PASS=your-app-password
-SMTP_FROM="SmartSeason <your-gmail@gmail.com>"
+SMTP_FROM="SmartSeason <your-email>"
 ```
 
-### Frontend (frontend/.env)
+### Frontend (`frontend/.env`)
 
 ```env
 VITE_API_URL=http://localhost:3001
@@ -162,104 +229,31 @@ VITE_API_URL=http://localhost:3001
 
 ---
 
-## 7. Database Schema (Supabase SQL)
+## 🗄 Database
 
-Run the provided SQL schema in Supabase to create:
+Uses PostgreSQL via Supabase.
 
-* profiles
+Core tables:
+
+* profiles (users + roles)
 * fields
 * field_updates
-* triggers and indexes
 
-### Default Admin
+Includes:
 
-The user with email:
-
-```
-admin@smartseason.com
-```
-
-is automatically assigned the admin role.
+* relational integrity
+* indexes for performance
+* triggers for timestamps
 
 ---
 
-## 8. Installation and Running
-
-### Prerequisites
-
-* Node.js (v16+)
-* npm (v7+)
-* Supabase account
-
-### Steps
-
-1. Clone repository
-2. Install dependencies
-3. Configure environment variables
-4. Run development servers
-
-Backend:
-
-```bash
-cd backend
-npm run dev
-```
-
-Frontend:
-
-```bash
-cd frontend
-npm run dev
-```
-
----
-
-## 9. Authentication and Password Reset Flow
-
-### Login
-
-* Frontend → POST /api/auth/login
-* Backend authenticates via Supabase
-* Returns user + token
-
-### First Login Reset (Agents)
-
-* Admin creates agent with temporary password
-* `must_reset_password = true`
-* Access blocked until reset
-* Endpoint:
-
-  ```
-  POST /api/auth/reset-password-first-login
-  ```
-* After reset → access granted
-
----
-
-## 10. Observation Edit Rule (15 Minutes)
-
-Edits are allowed only when:
-
-* The update is a note
-* The user is the owner or admin
-* The note is less than 15 minutes old
-
-This rule is enforced on the backend.
-
----
-
-## 11. API Summary
+## 📡 API Overview
 
 ### Auth
 
 * POST /api/auth/login
-* POST /api/auth/reset-password-first-login
-* POST /api/auth/logout
 * GET /api/auth/me
-
-### Dashboard
-
-* GET /api/dashboard
+* POST /api/auth/logout
 
 ### Fields
 
@@ -268,12 +262,13 @@ This rule is enforced on the backend.
 * GET /api/fields/:id
 * PUT /api/fields/:id (admin)
 * DELETE /api/fields/:id (admin)
-* PATCH /api/fields/:id/stage
-* GET /api/fields/:id/updates
-* POST /api/fields/:id/updates
-* PATCH /api/fields/:id/updates/:updateId
 
-### Agents (Admin)
+### Updates
+
+* POST /api/fields/:id/updates
+* GET /api/fields/:id/updates
+
+### Users (Admin)
 
 * GET /api/users
 * POST /api/users
@@ -282,59 +277,57 @@ This rule is enforced on the backend.
 
 ---
 
-## 12. SMTP Invite Behavior
+## 📧 Agent Onboarding
 
 When an admin creates an agent:
 
-* Account is created or synced
-* Temporary password is generated
-* must_reset_password = true
-* Invite email is sent
-
-If email fails:
-
-* Account still created
-* API returns warning
+* Account is created
+* Temporary password is assigned
+* Email is sent via SMTP
+* Agent must reset password on first login
 
 ---
 
-## 13. Troubleshooting
+## ⚠️ Assumptions
 
-### Invalid Credentials
+* Users are limited to Admins and Field Agents
+* Fields are assigned to one agent at a time
+* Field status is derived from stage and update activity
+* SMTP credentials are valid and configured
+* Application is used in a modern browser
 
-* Verify user in Supabase
-* Check password
-* Confirm email verification
+---
 
-### Server Errors
+## 🛠 Troubleshooting
 
-* Check backend .env values
-* Validate service role key
-
-### SMTP Issues
+### Login Issues
 
 * Verify credentials
+* Ensure user exists in Supabase
+
+### Backend Errors
+
+* Check environment variables
+* Confirm Supabase keys
+
+### Email Not Sending
+
+* Verify SMTP credentials
 * Use Gmail app password
 * Check spam folder
 
-### Dashboard Access Issues
+---
 
-* Ensure profile exists
-* Run schema and triggers
-* Check must_reset_password flag
+## 🔒 Security Notes
+
+* Environment variables are not committed
+* Service role key is backend-only
+* Token validation is enforced on protected routes
+* Role-based access is strictly applied
 
 ---
 
-## 14. Security Notes
-
-* Do not commit .env files
-* Keep service role key private
-* Rotate compromised keys
-* Use HTTPS in production
-
----
-
-## 15. Scripts
+## 📜 Scripts
 
 ### Root
 
@@ -349,7 +342,6 @@ npm run dev:frontend
 ```bash
 npm run dev
 npm run start
-npm run seed
 ```
 
 ### Frontend
@@ -357,25 +349,7 @@ npm run seed
 ```bash
 npm run dev
 npm run build
-npm run preview
 ```
 
 ---
 
-## 16. Assumptions
-
-* Users are admins and agents
-* Supabase handles authentication and database
-* SMTP is externally configured
-* Modern browsers are used
-
----
-
-## 17. Design Philosophy
-
-SmartSeason emphasizes:
-
-* Clear separation of concerns
-* Backend-enforced business rules
-* Maintainable and scalable structure
-* Practical over complex architecture
