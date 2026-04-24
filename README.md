@@ -1,4 +1,4 @@
-# 🌱 SmartSeason Field Monitoring System
+#  SmartSeason Field Monitoring System
 
 SmartSeason is a full-stack web application for tracking crop progress across multiple fields during a growing season. It enables administrators and field agents to collaborate efficiently through structured field management, updates, and dashboards.
 
@@ -23,7 +23,7 @@ Backend: [https://smartseason-1-h8ek.onrender.com](https://smartseason-1-h8ek.on
 
 ---
 
-## 🔐 Demo Credentials
+##  Demo Credentials
 
 **Admin**
 
@@ -37,7 +37,7 @@ Backend: [https://smartseason-1-h8ek.onrender.com](https://smartseason-1-h8ek.on
 
 ---
 
-## 🧱 Tech Stack
+##  Tech Stack
 
 ### Frontend
 
@@ -56,7 +56,7 @@ Backend: [https://smartseason-1-h8ek.onrender.com](https://smartseason-1-h8ek.on
 
 ---
 
-## 🏗 System Design
+##  System Design
 
 SmartSeason follows a modular layered architecture:
 
@@ -79,7 +79,7 @@ This structure ensures clear separation of concerns and maintainability.
 
 ---
 
-## 👥 Users & Access
+##  Users & Access
 
 The system supports two roles:
 
@@ -99,7 +99,7 @@ Authentication is handled via Supabase, with backend token verification and role
 
 ---
 
-## 🌾 Field Management
+##  Field Management
 
 Admins can:
 
@@ -118,7 +118,7 @@ Each field contains:
 
 ---
 
-## 🔄 Field Updates
+##  Field Updates
 
 ### Field Agents
 
@@ -132,7 +132,7 @@ Each field contains:
 
 ---
 
-## 🌱 Field Stages
+##  Field Stages
 
 Fields follow this lifecycle:
 
@@ -145,7 +145,7 @@ Stage updates are validated and tracked in the system.
 
 ---
 
-## ⚠️ Field Status Logic
+##  Field Status Logic
 
 Each field has a computed status:
 
@@ -175,7 +175,7 @@ This logic helps identify neglected or delayed fields.
 
 ---
 
-## 📊 Dashboard
+##  Dashboard
 
 ### Admin Dashboard
 
@@ -191,7 +191,7 @@ This logic helps identify neglected or delayed fields.
 
 ---
 
-## ⏱ Observation Edit Rule
+##  Observation Edit Rule
 
 Observations can only be edited if:
 
@@ -202,7 +202,7 @@ This rule is enforced on the backend.
 
 ---
 
-## ⚙️ Environment Setup
+##  Environment Setup
 
 ### Backend (`backend/.env`)
 
@@ -229,7 +229,7 @@ VITE_API_URL=http://localhost:3001
 
 ---
 
-## 🗄 Database
+##  Database
 
 Uses PostgreSQL via Supabase.
 
@@ -247,7 +247,7 @@ Includes:
 
 ---
 
-## 📡 API Overview
+##  API Overview
 
 ### Auth
 
@@ -277,7 +277,7 @@ Includes:
 
 ---
 
-## 📧 Agent Onboarding
+##  Agent Onboarding
 
 When an admin creates an agent:
 
@@ -288,7 +288,7 @@ When an admin creates an agent:
 
 ---
 
-## ⚠️ Assumptions
+##  Assumptions
 
 * Users are limited to Admins and Field Agents
 * Fields are assigned to one agent at a time
@@ -298,7 +298,7 @@ When an admin creates an agent:
 
 ---
 
-## 🛠 Troubleshooting
+##  Troubleshooting
 
 ### Login Issues
 
@@ -318,7 +318,7 @@ When an admin creates an agent:
 
 ---
 
-## 🔒 Security Notes
+##  Security Notes
 
 * Environment variables are not committed
 * Service role key is backend-only
@@ -327,7 +327,7 @@ When an admin creates an agent:
 
 ---
 
-## 📜 Scripts
+##  Scripts
 
 ### Root
 
